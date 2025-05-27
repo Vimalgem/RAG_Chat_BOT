@@ -7,7 +7,7 @@ from langchain.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
 
-GROQ_API_KEY="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"
+GROQ_API_KEY="your_apikey"
 
 #Load_Docs
 def load_docs(file_path):
