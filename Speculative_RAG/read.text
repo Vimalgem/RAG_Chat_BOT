@@ -1,0 +1,191 @@
+# 🧠 Speculative RAG System
+
+A simple **Retrieval-Augmented Generation (RAG)** system built with **LangChain**, **Groq**, and **Streamlit**.
+
+## 📦 Features
+
+- Upload any PDF file
+- Ask questions based on its content
+- Powered by Llama3 via Groq API
+- Uses open-source embeddings and FAISS for retrieval
+
+## 🛠️ Requirements
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+
+
+🧭 Speculative RAG Process Flowchart (Text-Based)
+
++-----------------------------+
+|        User Question       |
++------------+---------------+
+             |
+             v
++----------------------------+
+|  Draft Answer Generation   |
+| (Fast Small Model: e.g.,   |
+|     Llama3-8b)              |
++------------+---------------+
+             |
+             v
++----------------------------+
+| Retrieve Relevant Context  |
+| from Document Store (FAISS)|
+| using embeddings (e.g.,    |
+| all-MiniLM-L6-v2)          |
++------------+---------------+
+             |
+             v
++----------------------------+
+| Final Answer Verification  |
+| & Refinement               |
+| (Large Accurate Model:     |
+| e.g., Llama3-70b or Mixtral)|
+| Uses:                      |
+| - Original question        |
+| - Retrieved context        |
+| - Draft answer             |
++------------+---------------+
+             |
+             v
++----------------------------+
+|      Return Final Answer   |
+|      to User               |
++-----------------------------+
+
+🌟 What is Speculative RAG (Retrieval-Augmented Generation)?
+Speculative RAG is an advanced version of the traditional RAG system. It improves response quality and speed by using a two-stage process :
+
+A fast, lightweight model generates a speculative or draft answer.
+A more powerful, accurate model validates and refines that draft using context retrieved from documents.
+🔁 Speculative RAG Process Flow
+Here's a step-by-step breakdown of how Speculative RAG works:
+
+1. User Asks a Question
+Example:
+"What are the key findings of the report?" 
+2. Draft Answer Generation (Fast Draft Model)
+A small, fast language model (like Llama3-8B) quickly generates a draft answer based on its internal knowledge.
+This is just a guess , not yet backed by your document content.
+🧠 Think of this like a student jotting down what they remember before checking the textbook.
+
+3. Retrieve Relevant Context from Documents
+The question is used to search through a vector database (like FAISS).
+The most relevant document chunks are retrieved and prepared for use.
+📘 Like the student looking up the right chapter in the textbook.
+
+4. Verification & Refinement (Accurate Large Model)
+A larger, more accurate model (like Mixtral or Llama3-70B via Groq) takes:
+The original question
+The retrieved context
+The speculative draft answer
+It then validates, corrects, and refines the draft into a final, factually accurate answer.
+✅ Like a teacher reviewing and correcting the student’s answer.
+
+5. Return Final Answer to User
+The refined, validated answer is returned to the user — it's now:
+Fast (because of the initial speculative step)
+Accurate (because of the verification step)
+
+
+🧠 Why Use Speculative RAG?
+⚡ Faster Response
+Uses a small model to generate a draft quickly
+✅ Higher Accuracy
+Final answer is verified with document context
+💡 Better Efficiency
+Reduces load on large models by offloading drafts
+📈 Scalable
+Works well with large document sets and real-time queries
+
+
+profile
+Qwen3-235B-A22B
+12:10 pm
+🌟 What is Speculative RAG (Retrieval-Augmented Generation)?
+Speculative RAG is an advanced version of the traditional RAG system. It improves response quality and speed by using a two-stage process :
+
+A fast, lightweight model generates a speculative or draft answer.
+A more powerful, accurate model validates and refines that draft using context retrieved from documents.
+🔁 Speculative RAG Process Flow
+Here's a step-by-step breakdown of how Speculative RAG works:
+
+1. User Asks a Question
+Example:
+"What are the key findings of the report?" 
+2. Draft Answer Generation (Fast Draft Model)
+A small, fast language model (like Llama3-8B) quickly generates a draft answer based on its internal knowledge.
+This is just a guess , not yet backed by your document content.
+🧠 Think of this like a student jotting down what they remember before checking the textbook.
+
+3. Retrieve Relevant Context from Documents
+The question is used to search through a vector database (like FAISS).
+The most relevant document chunks are retrieved and prepared for use.
+📘 Like the student looking up the right chapter in the textbook.
+
+4. Verification & Refinement (Accurate Large Model)
+A larger, more accurate model (like Mixtral or Llama3-70B via Groq) takes:
+The original question
+The retrieved context
+The speculative draft answer
+It then validates, corrects, and refines the draft into a final, factually accurate answer.
+✅ Like a teacher reviewing and correcting the student’s answer.
+
+5. Return Final Answer to User
+The refined, validated answer is returned to the user — it's now:
+Fast (because of the initial speculative step)
+Accurate (because of the verification step)
+🧠 Why Use Speculative RAG?
+⚡ Faster Response
+Uses a small model to generate a draft quickly
+✅ Higher Accuracy
+Final answer is verified with document context
+💡 Better Efficiency
+Reduces load on large models by offloading drafts
+📈 Scalable
+Works well with large document sets and real-time queries
+
+🔄 Comparison: Traditional vs Speculative RAG
+Step 1
+Retrieve context from documents
+Retrieve context from documents
+Step 2
+Pass question + context to LLM → get answer
+Pass question to small LLM → get draft
+Step 3
+Return answer
+Pass draft + context to large LLM → refine and validate
+Step 4
+—
+Return final, improved answer
+
+🧪 Real-World Analogy
+Imagine you're a journalist writing an article:
+
+You write a first draft quickly based on memory (speculative model ).
+Then you look up sources and facts (retrieval ).
+Finally, you revise your article using those sources (verification model ) before publishing.
+That’s exactly how Speculative RAG works!
+
+🛠️ In Your App (from previous code)
+In your current setup:
+
+ChatGroq uses Llama3-8b as the speculative model.
+The same model can be used again for refinement, or you could upgrade to Llama3-70b if available.
+Document retrieval is handled by FAISS + HuggingFace embeddings .
+You can later enhance it by separating speculative and verification steps explicitly.
+
+📌 Summary
+1
+User asks a question
+2
+Small model generates a speculative/draft answer
+3
+System retrieves relevant document context
+4
+Large model verifies and refines the draft using context
+5
+Final answer is returned to the user
